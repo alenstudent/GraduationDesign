@@ -42,4 +42,8 @@ public class ProductService extends AbstractService {
 		this.productDao.insertBySqlIdAndParam(NamespaceUtil.getNamespace(Product.class, "addProduct"), product);
 		
 	}
+
+	public Product getProductByProductId(String productId) {
+		return this.productDao.selectUniqueOneBySqlIdAndParam(NamespaceUtil.getNamespace(Product.class, "getProductByProductId"), productId);
+	}
 }

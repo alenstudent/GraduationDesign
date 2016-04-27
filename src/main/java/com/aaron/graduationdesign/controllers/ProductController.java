@@ -1,10 +1,12 @@
 package com.aaron.graduationdesign.controllers;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -53,14 +55,30 @@ public class ProductController extends BaseController {
 		return mav;
 	}
 	@RequestMapping("/add")
-	public ModelAndView addProduct(Product product, HttpServletRequest request) {
+	public ModelAndView addProduct(Product product) {
 		ModelAndView mav = getJsonView();
 		product.setId(IDUtil.generateUUID());
 		product.setProCraeteTime(new Date());
 		product.setProUpdateTime(new Date());
-		product.setProUpdateUser(ContextUtil.getUserFromRequest(request).getId());
+		product.setProUpdateUser(ContextUtil.getUserFromContext().getId());
 		productService.addProduct(product);
 		mav.addObject(new ReturnModel(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getTips(), product));
+		return mav;
+	}
+	
+	@RequestMapping("/update/{productId}")
+	public ModelAndView updateProduct(@PathVariable("productId") String productId, HttpServletResponse response) {
+		ModelAndView mav = getJSPView("productEdit");
+		Product product = this.productService.getProductByProductId(productId);
+		if (null == product) {
+			try {
+				response.sendRedirect("404.jsp");
+				return null;
+			} catch (IOException e) {
+				log.error(e.getMessage(), e);
+			}
+		}
+		mav.addObject(new ReturnModel(product));
 		return mav;
 	}
 	

@@ -39,7 +39,9 @@
 	<listener>
 		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
 	</listener>
-
+	<listener>  
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>  
+	</listener>
 	<!-- ################ log4j配置 ################ -->
 	<!-- 配置log4j配置文件路径 -->
 	<context-param>

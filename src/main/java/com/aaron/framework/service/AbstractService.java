@@ -1,7 +1,12 @@
 package com.aaron.framework.service;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.sound.midi.MidiDevice.Info;
 
 import org.apache.ibatis.session.ResultHandler;
 import org.slf4j.Logger;
@@ -9,7 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import com.aaron.framework.dao.BaseDao;
 import com.aaron.framework.exception.DBException;
+import com.aaron.framework.model.BaseModel;
 import com.aaron.framework.model.Page;
+import com.aaron.framework.utils.NamespaceUtil;
 
 /**
  * <p>Title: AbstractService</p>
@@ -92,6 +99,29 @@ public abstract class AbstractService implements BaseService {
 	@Override
 	public <T> T selectUniqueOneBySqlIdAndParam(String sqlId, Object param) throws DBException {
 		return this.getDao().selectUniqueOneBySqlIdAndParam(sqlId, param);
+	}
+	
+	public <T> List<T> list(Page<T> page) {
+		return this.list(page, new Object());
+	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public <T> List<T> list(Page<T> page, Object param) {
+		Type genType = page.getClass().getGenericSuperclass();
+		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+		Class clazz = (Class) params[0];
+		return this.getDao().selectListBySqlIdAndParamWithPage(NamespaceUtil.getNamespace(clazz, "list"), param, page);
+	}
+	public int delete(List<String> ids, Class<? extends BaseModel> clazz) {
+		return this.getDao().deleteBySqlIdAndParam(NamespaceUtil.getNamespace(clazz, "del"), ids);
+	}
+	public int update(BaseModel baseModel) {
+		return this.getDao().updateBySqlIdAndParam(NamespaceUtil.getNamespace(baseModel.getClass(), "update"), baseModel);
+	}
+	public int insert(BaseModel baseModel) {
+		return this.getDao().insertBySqlIdAndParam(NamespaceUtil.getNamespace(baseModel.getClass(), "insert"), baseModel);
+	}
+	public <T extends BaseModel> T Info(String id, Class<? extends BaseModel> clazz) {
+		return this.getDao().selectUniqueOneBySqlIdAndParam(NamespaceUtil.getNamespace(clazz, "info"), id);
 	}
 }
 

@@ -3,6 +3,7 @@ var pageModel = {"pageSize": 10, "currentPage": 1};
 
 $(function(){
 	$(".pagination").on("click", "li", pageNumClicked);
+//	$(".customerTable").on("click", "tbody tr", rowClicked);
 	listMyCustomers();
 });
 
@@ -15,6 +16,7 @@ function listMyCustomers() {
 		for (var i = 0; i < models.length; i++) {
 			var model = models[i];
 			var tr = "<tr id='" + model.id + "'>";
+					tr += "<td><input type=\"checkbox\"></td>";
 					tr += "<td>" + model.cusName + "</td>";	
 					tr += "<td>" + model.cusAddress + "</td>";
 					tr += "<td>" + model.cusZipCode + "</td>";
@@ -28,7 +30,6 @@ function listMyCustomers() {
 		
 		$(".pagination li").remove();
 		var pageCount = data.returnModel.pageCount;
-		var pageSize = data.returnModel.pageSize;
 		var currentPage = data.returnModel.currentPage;
 		var li = "";
 		if (currentPage == 1) {			
@@ -77,3 +78,14 @@ function pageNumClicked() {
 	}
 	listMyCustomers();
 }
+
+
+function rowClicked() {
+	var productId = $(this).attr("id");
+	window.location.href = context + "/product/update/" + productId;
+}
+
+
+
+
+

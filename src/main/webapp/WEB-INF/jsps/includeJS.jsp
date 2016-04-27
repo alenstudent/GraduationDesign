@@ -5,5 +5,5 @@
 <script src="${context}/js/bootstrap.js" type="text/javascript"></script>
 <script src="${context}/js/md5.js" type="text/javascript"></script>
 <script src="${context}/js/AjaxUtil.js" type="text/javascript"></script>
-<script src="${context}/js/bootstrap-dialog.min.js"
-	type="text/javascript"></script>
+<script src="${context}/js/bootstrap-dialog.min.js" type="text/javascript"></script>
+<script src="${context}/js/PageUtil.js" type="text/javascript"></script>

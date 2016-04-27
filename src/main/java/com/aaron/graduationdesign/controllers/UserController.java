@@ -1,6 +1,5 @@
 package com.aaron.graduationdesign.controllers;
 
-import java.net.CookieStore;
 import java.util.Date;
 
 import javax.annotation.Resource;
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -78,7 +76,17 @@ public class UserController extends BaseController {
 			for (Cookie cookie : request.getCookies()) {
 				if (cookie.getName().equalsIgnoreCase(EhCacheUtil.JSESSIONID_CACHE_NAME)) {
 					User u = ((User)returnModel.getBody());
-					EhCacheUtil.getInstance().put(EhCacheUtil.JSESSIONID_CACHE_NAME, cookie.getValue(), u);					
+					EhCacheUtil.getInstance().put(EhCacheUtil.JSESSIONID_CACHE_NAME, cookie.getValue(), u);	
+					int index = 0;
+					while (EhCacheUtil.getInstance().get(EhCacheUtil.JSESSIONID_CACHE_NAME, cookie.getValue()) == null) {
+						if (index == 5) break;
+						try {
+							Thread.sleep(1000);
+							index++;
+						} catch (InterruptedException e) {
+							log.error(e.getMessage(), e);;
+						}
+					}
 				}
 			}
 		}

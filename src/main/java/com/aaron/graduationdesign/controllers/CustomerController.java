@@ -1,12 +1,11 @@
 package com.aaron.graduationdesign.controllers;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,14 +33,72 @@ public class CustomerController extends BaseController {
 	@Resource(name = "customerService")
 	private CustomerService customerService;
 	
-	@RequestMapping("/list/{currentPage}/{pageSize}")
-	public ModelAndView getMyAllCustomers(@PathVariable("currentPage") int currentPage, @PathVariable("pageSize") int pageSize, HttpServletRequest request) {
+	@RequestMapping("/list")
+	public ModelAndView list(int currentPage, int pageSize) {
+		ModelAndView mav = getJSPView("customer/list");
+		Page<Customer> page = new Page<Customer>(currentPage, pageSize);
+		List<Customer> customers = customerService.list(page);
+		ReturnModel reutrnModel = new ReturnModel(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getTips(), customers, currentPage, pageSize, page.getPageCount(), page.getTotalCount());
+		mav.addObject(RETURN_MODEL_KEY, reutrnModel);
+		return mav;
+	}
+	
+	@RequestMapping("/add/page")
+	public ModelAndView addPage() {
+		ModelAndView mav = getJSPView("customer/add");
+		return mav;
+	}
+	
+	@RequestMapping("/insert")
+	public ModelAndView insert(Customer customer) {
 		ModelAndView mav = getJsonView();
-		User user = ContextUtil.getUserFromRequest(request);
+		customer.setId(IDUtil.generateUUID());
+		this.customerService.insert(customer);
+		mav.addObject(RETURN_MODEL_KEY, new ReturnModel(customer));
+		return mav;
+	}
+	@RequestMapping("/update")
+	public ModelAndView update(Customer customer) {
+		ModelAndView mav = getJsonView();
+		int affected = this.customerService.update(customer);
+		if (affected > 0) {
+			mav.addObject(RETURN_MODEL_KEY, new ReturnModel(customer));
+		} else {
+			mav.addObject(RETURN_MODEL_KEY, new ReturnModel(ReturnCodeEnum.NETWORK_ERROR.getCode(), ReturnCodeEnum.NETWORK_ERROR.getTips(), customer));
+		}
+		return mav;
+	}
+	@RequestMapping("/info")
+	public ModelAndView Info(String id) {
+		ModelAndView mav = getJSPView("customer/info");
+		Customer customer = this.customerService.Info(id, Customer.class);
+		if (null != customer) {
+			mav.addObject(RETURN_MODEL_KEY, new ReturnModel(customer));
+		} else {
+			mav.addObject(RETURN_MODEL_KEY, new ReturnModel(ReturnCodeEnum.NETWORK_ERROR.getCode(), ReturnCodeEnum.NETWORK_ERROR.getTips(), id));
+		}
+		return mav;
+	}
+	@RequestMapping("/del")
+	public ModelAndView del(String[] ids) {
+		ModelAndView mav = getJsonView();
+		int affectedCount = this.customerService.delete(Arrays.asList(ids), Customer.class);
+		if (affectedCount > 0) {
+			mav.addObject(RETURN_MODEL_KEY, new ReturnModel(ids));
+		} else {
+			mav.addObject(RETURN_MODEL_KEY, new ReturnModel(ReturnCodeEnum.NETWORK_ERROR.getCode(), ReturnCodeEnum.NETWORK_ERROR.getTips(), ids));
+		}
+		return mav;
+	}
+	
+	@RequestMapping("/list")
+	public ModelAndView lists(int currentPage, int pageSize) {
+		ModelAndView mav = getJsonView();
+		User user = ContextUtil.getUserFromContext();
 		Page<Customer> page = new Page<Customer>(currentPage, pageSize);
 		List<Customer> customers = customerService.getCustomersBySaleId(user.getId(), page);
 		ReturnModel reutrnModel = new ReturnModel(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getTips(), customers, currentPage, pageSize, page.getPageCount(), page.getTotalCount());
-		mav.addObject(reutrnModel);
+		mav.addObject(RETURN_MODEL_KEY, reutrnModel);
 		return mav;
 	}
 	
@@ -51,10 +108,10 @@ public class CustomerController extends BaseController {
 		return mav;
 	}
 	@RequestMapping("/add")
-	public ModelAndView addCutomer(Customer customer, HttpServletRequest request) {
+	public ModelAndView addCutomer(Customer customer) {
 		ModelAndView mav = getJsonView();
 		customer.setId(IDUtil.generateUUID());
-		customer.setCusBelongTo(ContextUtil.getUserFromRequest(request).getId());
+		customer.setCusBelongTo(ContextUtil.getUserFromContext().getId());
 		customerService.addCustomer(customer);
 		mav.addObject(new ReturnModel(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getTips(), customer));
 		return mav;

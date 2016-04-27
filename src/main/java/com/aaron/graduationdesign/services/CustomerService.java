@@ -30,7 +30,6 @@ public class CustomerService extends AbstractService {
 		return this.customerDao;
 	}
 	
-	
 	public List<Customer> getCustomersBySaleId(String saleId, Page<Customer> page) {
 		return this.customerDao.selectListBySqlIdAndParamWithPage(NamespaceUtil.getNamespace(Customer.class, "getAllCustomersBySalseId"), saleId, page);
 	}

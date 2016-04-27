@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.aaron.framework.exception.BaseException;
 import com.aaron.framework.exception.UnLoginException;
 import com.aaron.framework.model.ReturnModel;
+import com.aaron.graduationdesign.Utils.ContextUtil;
 
 
 /**
@@ -23,12 +24,18 @@ import com.aaron.framework.model.ReturnModel;
  */
 public abstract class BaseController {
 	protected Logger log = LoggerFactory.getLogger(this.getClass());
+	protected final String RETURN_MODEL_KEY = "returnModel";
+	protected final String URI_KEYString = "uri";
 	protected ModelAndView getJsonView() {
-		return new ModelAndView("json");
+		ModelAndView mav = new ModelAndView("json");
+		mav.addObject(URI_KEYString, ContextUtil.getRequestFromContext().getRequestURI());
+		return mav;
 	}
 	
 	protected ModelAndView getJSPView(String jspViewName) {
-		return new ModelAndView(jspViewName);
+		ModelAndView mav = new ModelAndView(jspViewName);
+		mav.addObject(URI_KEYString, ContextUtil.getRequestFromContext().getRequestURI());
+		return mav;
 	}
 	/**
 	 * 捕获运行时异常

@@ -41,5 +41,8 @@
 		)
 	</insert>
 	
+	<select id="getProductByProductId" resultMap="Product" parameterType="string">
+		select <include refid="columns" /> from products where id = #{id}
+	</select>
 	
 </mapper>

@@ -22,15 +22,15 @@
 	</select>
 	<update id="update" parameterType="com.aaron.graduationdesign.models.Customer">
 		update customers set 
-			cus_name = #{cusName, jdbcType=VARCHAR}, 
-			cus_address = #{cusAddress, jdbcType=VARCHAR}, 
-			cus_zip_code = #{cusZipCode, jdbcType=VARCHAR}, 
-			cus_phone = #{cusPhone, jdbcType=VARCHAR}, 
-			cus_belong_to = #{cusBelongTo, jdbcType=VARCHAR}, 
-			cus_tax_num = #{cusTaxNum, jdbcType=VARCHAR}, 
-			cus_bank_account = #{cusBankAccount, jdbcType=VARCHAR}, 
-			cus_bank_name = #{cusBankName, jdbcType=VARCHAR}
-			where id = #{id, jdbcType=VARCHAR}
+			cus_name=#{cusName, jdbcType=VARCHAR},
+			cus_address=#{cusAddress, jdbcType=VARCHAR},
+			cus_zip_code=#{cusZipCode, jdbcType=VARCHAR},
+			cus_phone=#{cusPhone, jdbcType=VARCHAR},
+			cus_belong_to=#{cusBelongTo, jdbcType=VARCHAR},
+			cus_tax_num=#{cusTaxNum, jdbcType=VARCHAR},
+			cus_bank_account=#{cusBankAccount, jdbcType=VARCHAR},
+			cus_bank_name=#{cusBankName, jdbcType=VARCHAR}
+		where id=#{id, jdbcType=VARCHAR}
 	</update>
 	<insert id="insert" parameterType="com.aaron.graduationdesign.models.Customer">
 		insert into customers values
@@ -52,6 +52,9 @@
 			#{id, jdbcType=VARCHAR}
 		</foreach>
 	</delete>
+	
+	<!-- 自定义sql语句从此处开始 -->
+	
 	
 	<select id="getAllCustomersBySalseId" resultMap="Customer">
 		select <include refid="columns" /> from customers where cus_belong_to = #{saleId}

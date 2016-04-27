@@ -1,10 +1,20 @@
 package com.aaron.graduationdesign.services;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
-import com.aaron.graduationdesign.daos.ProductDao;
+
 import com.aaron.framework.dao.BaseDao;
+import com.aaron.framework.model.Page;
 import com.aaron.framework.service.AbstractService;
+import com.aaron.framework.utils.NamespaceUtil;
+import com.aaron.graduationdesign.daos.ProductDao;
+import com.aaron.graduationdesign.models.Customer;
+import com.aaron.graduationdesign.models.Product;
 
 /**
  *<pre>
@@ -21,5 +31,15 @@ public class ProductService extends AbstractService {
 	@Override
 	public BaseDao getDao() {
 		return this.productDao;
+	}
+
+	public List<Product> getCustomers(Page<Product> page) {
+		Map<String, String> parameters = new HashMap<String, String>();
+		return this.productDao.selectListBySqlIdAndParamWithPage(NamespaceUtil.getNamespace(Product.class, "getAllProducts"), parameters, page);
+	}
+
+	public void addProduct(Product product) {
+		this.productDao.insertBySqlIdAndParam(NamespaceUtil.getNamespace(Product.class, "addProduct"), product);
+		
 	}
 }

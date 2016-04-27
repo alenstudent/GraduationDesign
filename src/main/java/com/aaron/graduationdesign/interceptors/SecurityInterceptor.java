@@ -1,5 +1,7 @@
 package com.aaron.graduationdesign.interceptors;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,10 +27,17 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
+		Enumeration<String> enumeration = request.getHeaderNames();
+		while(enumeration.hasMoreElements()) {
+			String headerName = enumeration.nextElement();
+			log.debug("头字段 " + headerName + ": " + request.getHeader(headerName));
+		}
+		
 		log.debug("requestURI: " + request.getRequestURI());
 		String accessToken = request.getHeader("accessToken");
 		if (StringUtils.isBlank(accessToken)) {
 			Cookie[] cookies = request.getCookies();
+			if (null == cookies) cookies = new Cookie[]{};
 			for (Cookie cookie : cookies) {
 				log.debug("cookie.name:" + cookie.getName() + ",cookie.value:" + cookie.getValue());
 				if (cookie.getName().equals(EhCacheUtil.JSESSIONID_CACHE_NAME) 
@@ -36,12 +45,20 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 					return true;
 				}
 			}
-			throw new UnLoginException("获取不到头部accessToken字段");
+			if (null != request.getHeader("X-Requested-With") && "XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {				
+				throw new UnLoginException("获取不到头部accessToken字段");
+			} else {
+				response.sendRedirect(request.getContextPath() + "/user/login/page");
+				return false;
+			}
 		}
-		if (null == EhCacheUtil.getInstance().get(EhCacheUtil.JSESSIONID_CACHE_NAME, accessToken)) {
+		
+		if (null != request.getHeader("X-Requested-With") && "XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {				
 			throw new UnLoginException("用户未登录");
+		} else {
+			response.sendRedirect(request.getContextPath() + "/user/login/page");
+			return false;
 		}
-		return true;
 	}
 
 }

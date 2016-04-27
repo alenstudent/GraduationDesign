@@ -90,6 +90,11 @@ public class UserController extends BaseController {
 		ModelAndView mav = getJSPView("salesPage");
 		return mav;
 	}
+	@RequestMapping("/admin/page")
+	public ModelAndView toAdminPage() {
+		ModelAndView mav = getJSPView("adminPage");
+		return mav;
+	}
 	@RequestMapping("/logout")
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav = getJsonView();

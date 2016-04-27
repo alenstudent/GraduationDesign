@@ -1,29 +1,30 @@
 <%@page pageEncoding="utf-8"%>
 
 <%
-	String title = "我的客户";
+	String title = "产品列表";
 %>
 <%@include file="includeHeader.jsp"%>
 <body>
 
 	<div class="container">
 		<div align="center">
-			<h1>客户列表</h1>
+			<h1>产品列表</h1>
 		</div>
 		<div align="center">
-			<a href="${context }/customer/add/page" class="btn btn-default addCustomer">添加客户</a>
+			<a href="${context }/product/add/page" class="btn btn-default addProduct">添加产品</a>
 		</div>
 
-		<table class="table table-hover customerTable">
+		<table class="table table-hover productTable">
 			<thead>
 				<tr>
-					<th>客户名称</th>
-					<th>联系地址</th>
-					<th>邮政编码</th>
-					<th>联系电话</th>
-					<th>纳税号码</th>
-					<th>开户银行</th>
-					<th>银行账号</th>
+					<th>产品编号</th>
+					<th>名称</th>
+					<th>规格型号</th>
+					<th>计量单位</th>
+					<th>累计销售量</th>
+					<th>当前库存量</th>
+					<th>建议销售价</th>
+					<th>生产厂商</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -46,6 +47,6 @@
 	</div>
 </body>
 <%@include file="includeJS.jsp"%>
-<script src="${context}/js/salesPage.js" type="text/javascript"></script>
+<script src="${context}/js/adminPage.js" type="text/javascript"></script>
 
 

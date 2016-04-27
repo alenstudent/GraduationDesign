@@ -3,27 +3,28 @@ var pageModel = {"pageSize": 10, "currentPage": 1};
 
 $(function(){
 	$(".pagination").on("click", "li", pageNumClicked);
-	listMyCustomers();
+	listProducts();
 });
 
 
-function listMyCustomers() {
-	AjaxUtil.get("/customer/list/" + pageModel.currentPage + "/" + pageModel.pageSize, {}, function(data) {
+function listProducts() {
+	AjaxUtil.get("/product/list/" + pageModel.currentPage + "/" + pageModel.pageSize, {}, function(data) {
 		debug(data);
-		$(".customerTable tbody tr").remove()
+		$(".productTable tbody tr").remove()
 		var models = data.returnModel.body;
 		for (var i = 0; i < models.length; i++) {
 			var model = models[i];
 			var tr = "<tr id='" + model.id + "'>";
-					tr += "<td>" + model.cusName + "</td>";	
-					tr += "<td>" + model.cusAddress + "</td>";
-					tr += "<td>" + model.cusZipCode + "</td>";
-					tr += "<td>" + model.cusPhone + "</td>";
-					tr += "<td>" + model.cusTaxNum + "</td>";
-					tr += "<td>" + model.cusBankAccount + "</td>";	
-					tr += "<td>" + model.cusBankName + "</td>";
+					tr += "<td>" + model.proNum + "</td>";	
+					tr += "<td>" + model.proName + "</td>";
+					tr += "<td>" + model.proGgxh + "</td>";
+					tr += "<td>" + model.proUnion + "</td>";
+					tr += "<td>" + model.proTotalSaleCount + "</td>";
+					tr += "<td>" + model.proCurrentStock + "</td>";	
+					tr += "<td>" + model.proAdviceSalePrice + "</td>";
+					tr += "<td>" + model.proManufacturer + "</td>";
 			tr += "</tr>";
-			$("table.customerTable tbody").append(tr);
+			$("table.productTable tbody").append(tr);
 		}
 		
 		$(".pagination li").remove();
@@ -31,7 +32,7 @@ function listMyCustomers() {
 		var pageSize = data.returnModel.pageSize;
 		var currentPage = data.returnModel.currentPage;
 		var li = "";
-		if (currentPage == 1) {			
+		if (currentPage <= 1) {			
 			li += "<li name='<' class='disabled'><a href='javascript:void(0);'>&laquo;</a></li>";
 		}
 		if (currentPage * 5 < pageCount) {
@@ -54,7 +55,7 @@ function listMyCustomers() {
 				}
 			}
 		}
-		if (currentPage == pageCount) {			
+		if (currentPage >= pageCount) {			
 			li += "<li name='>' class='disabled'><a href='javascript:void(0);'>&raquo;</a></li>";
 		} else {
 			li += "<li name='>'><a href='javascript:void(0);'>&raquo;</a></li>";
@@ -75,5 +76,5 @@ function pageNumClicked() {
 	} else {
 		pageModel.currentPage = parseInt(pageName);
 	}
-	listMyCustomers();
+	listProducts();
 }

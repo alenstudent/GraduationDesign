@@ -11,12 +11,35 @@
 		<result property="proCurrentStock" column="pro_current_stock" jdbcType="NUMERIC"/>
 		<result property="proAdviceSalePrice" column="pro_advice_sale_price" jdbcType="NUMERIC"/>
 		<result property="proManufacturer" column="pro_manufacturer" jdbcType="VARCHAR"/>
-		<result property="proCraeteTime" column="pro_craete_time" jdbcType="DATE"/>
-		<result property="proUpdateTime" column="pro_update_time" jdbcType="DATE"/>
+		<result property="proCraeteTime" column="pro_craete_time" jdbcType="TIMESTAMP"/>
+		<result property="proUpdateTime" column="pro_update_time" jdbcType="TIMESTAMP"/>
 		<result property="proUpdateUser" column="pro_update_user" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="columns">
 		id,pro_num,pro_name,pro_ggxh,pro_union,pro_total_sale_count,pro_current_stock,pro_advice_sale_price,pro_manufacturer,pro_craete_time,pro_update_time,pro_update_user
 	</sql>
+	
+	
+	<select id="getAllProducts" resultMap="Product">
+		select <include refid="columns" /> from products
+	</select>
+	<insert id="addProduct" parameterType="com.aaron.graduationdesign.models.Product">
+		insert into products values(
+			#{id, jdbcType=VARCHAR},
+			#{proNum, jdbcType=VARCHAR},
+			#{proName, jdbcType=VARCHAR},
+			#{proGgxh, jdbcType=VARCHAR},
+			#{proUnion, jdbcType=VARCHAR},
+			#{proTotalSaleCount, jdbcType=NUMERIC},
+			#{proCurrentStock, jdbcType=NUMERIC},
+			#{proAdviceSalePrice, jdbcType=NUMERIC},
+			#{proManufacturer, jdbcType=VARCHAR},
+			#{proCraeteTime, jdbcType=TIMESTAMP},
+			#{proUpdateTime, jdbcType=TIMESTAMP},
+			#{proUpdateUser, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	
 </mapper>

@@ -21,10 +21,11 @@
 	<!-- 热加载mapper文件 -->
 	<bean class="com.aaron.framework.dao.MybatisMapperDynamicLoader" />
 
-	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="sqlSessionFactory" class="com.aaron.framework.dao.RefreshableSqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:mybatis.xml" />
 		<property name="mapperLocations" value="classpath:mappers/*.mapper.xml" />
+		<property name="interval" value="1000"></property>
 	</bean>
 
 

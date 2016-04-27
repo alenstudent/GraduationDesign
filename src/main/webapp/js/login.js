@@ -22,7 +22,7 @@ function login() {
 		if (data.returnModel.code == 200) {
 			var userType = data.returnModel.body.userType;
 			if (userType == 1) { // 跳转到管理人员页面
-				
+				window.location= context + "/user/admin/page";
 			} else if (userType == 2) { // 跳转到销售人员页面
 				window.location= context + "/user/sales/page";
 			}

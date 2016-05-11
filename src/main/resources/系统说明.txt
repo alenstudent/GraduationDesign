@@ -1,0 +1,13 @@
+数据库：mysql-5.6
+开发工具: Eclipse
+系统框架：Spring 4.0.5 + SpringMVC 4.0.5 + JSP + Mybatis 3.3.1 
+缓存框架: EhCache 2.6.11
+前端js框架：Jquery + Bootstrap
+服务器:Tomcat 6
+jar包管理框架: Maven2
+日志框架：Log4j
+
+
+
+
+

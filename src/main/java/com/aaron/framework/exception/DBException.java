@@ -1,5 +1,7 @@
 package com.aaron.framework.exception;
 
+import com.aaron.framework.model.ReturnCodeEnum;
+
 /**
 *
 * @author aaron Email: aaronhong0610@sina.com
@@ -13,7 +15,7 @@ public class DBException extends BaseException {
 	public DBException(String msg) {
 		super();
 		this.msg = msg;
-		this.code = 500;
+		this.code = ReturnCodeEnum.NETWORK_ERROR.getCode();
 	}
 
 	public DBException(String msg, int code) {

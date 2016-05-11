@@ -1,16 +1,15 @@
 package com.aaron.graduationdesign.models;
 
 
-import java.util.Date;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.aaron.framework.model.BaseModel;
 
 /**
  * 对象功能:产品信息表 Model对象
  * 开发人员:aaron
- * 创建时间:2016-04-27 00:04:20
+ * 创建时间:2016-04-28 17:18:33
  */
 public class Product extends BaseModel {
 	private static final long serialVersionUID = 1L;
@@ -53,11 +52,12 @@ public class Product extends BaseModel {
 	/**
 	 * 创建时间
 	 */
-	private java.util.Date  proCraeteTime;
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+	private java.util.Date  craeteTime;
 	/**
 	 * 更新时间
 	 */
-	private java.util.Date  proUpdateTime;
+	private java.util.Date  updateTime;
 	/**
 	 * 更新人
 	 */
@@ -193,29 +193,29 @@ public class Product extends BaseModel {
 	 * 设置 创建时间
 	 * @return
 	 */
-	public void setProCraeteTime(java.util.Date proCraeteTime) {
-		this.proCraeteTime = proCraeteTime;
+	public void setCraeteTime(java.util.Date craeteTime) {
+		this.craeteTime = craeteTime;
 	}
 	/**
 	 * 返回 创建时间
 	 * @return
 	 */
-	public java.util.Date getProCraeteTime() {
-		return this.proCraeteTime;
+	public java.util.Date getCraeteTime() {
+		return this.craeteTime;
 	}
 	/**
 	 * 设置 更新时间
 	 * @return
 	 */
-	public void setProUpdateTime(java.util.Date proUpdateTime) {
-		this.proUpdateTime = proUpdateTime;
+	public void setUpdateTime(java.util.Date updateTime) {
+		this.updateTime = updateTime;
 	}
 	/**
 	 * 返回 更新时间
 	 * @return
 	 */
-	public java.util.Date getProUpdateTime() {
-		return this.proUpdateTime;
+	public java.util.Date getUpdateTime() {
+		return this.updateTime;
 	}
 	/**
 	 * 设置 更新人

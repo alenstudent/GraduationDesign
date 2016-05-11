@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.aaron.graduationdesign.models.Product">
+	<resultMap id="Product" type="com.aaron.graduationdesign.models.Product">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="proNum" column="pro_num" jdbcType="VARCHAR"/>
+		<result property="proName" column="pro_name" jdbcType="VARCHAR"/>
+		<result property="proGgxh" column="pro_ggxh" jdbcType="VARCHAR"/>
+		<result property="proUnion" column="pro_union" jdbcType="VARCHAR"/>
+		<result property="proTotalSaleCount" column="pro_total_sale_count" jdbcType="NUMERIC"/>
+		<result property="proCurrentStock" column="pro_current_stock" jdbcType="NUMERIC"/>
+		<result property="proAdviceSalePrice" column="pro_advice_sale_price" jdbcType="NUMERIC"/>
+		<result property="proManufacturer" column="pro_manufacturer" jdbcType="VARCHAR"/>
+		<result property="proCraeteTime" column="pro_craete_time" jdbcType="TIMESTAMP"/>
+		<result property="proUpdateTime" column="pro_update_time" jdbcType="TIMESTAMP"/>
+		<result property="proUpdateUser" column="pro_update_user" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,pro_num,pro_name,pro_ggxh,pro_union,pro_total_sale_count,pro_current_stock,pro_advice_sale_price,pro_manufacturer,pro_craete_time,pro_update_time,pro_update_user
+	</sql>
+	
+	
+	<select id="getAllProducts" resultMap="Product">
+		select <include refid="columns" /> from products
+	</select>
+	<insert id="addProduct" parameterType="com.aaron.graduationdesign.models.Product">
+		insert into products values(
+			#{id, jdbcType=VARCHAR},
+			#{proNum, jdbcType=VARCHAR},
+			#{proName, jdbcType=VARCHAR},
+			#{proGgxh, jdbcType=VARCHAR},
+			#{proUnion, jdbcType=VARCHAR},
+			#{proTotalSaleCount, jdbcType=NUMERIC},
+			#{proCurrentStock, jdbcType=NUMERIC},
+			#{proAdviceSalePrice, jdbcType=NUMERIC},
+			#{proManufacturer, jdbcType=VARCHAR},
+			#{proCraeteTime, jdbcType=TIMESTAMP},
+			#{proUpdateTime, jdbcType=TIMESTAMP},
+			#{proUpdateUser, jdbcType=VARCHAR}
+		)
+	</insert>
+	
+	<select id="getProductByProductId" resultMap="Product" parameterType="string">
+		select <include refid="columns" /> from products where id = #{id}
+	</select>
+	
+</mapper>

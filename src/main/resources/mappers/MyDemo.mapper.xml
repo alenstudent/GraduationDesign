@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.aaron.graduationdesign.models.MyDemo">
+	<resultMap id="MyDemo" type="com.aaron.graduationdesign.models.MyDemo">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="name" column="name" jdbcType="VARCHAR"/>
+		<result property="age" column="age" jdbcType="NUMERIC"/>
+		<result property="salary" column="salary" jdbcType="NUMERIC"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,name,age,salary
+	</sql>
+	
+	<select id="list" resultMap="MyDemo">
+		select <include refid="columns" /> from my_demo
+	</select>
+	<select id="info" resultMap="MyDemo">
+		select <include refid="columns" /> from my_demo where id = #{id, jdbcType=VARCHAR}
+	</select>
+	<update id="update" parameterType="com.aaron.graduationdesign.models.MyDemo">
+		update my_demo set 
+			name=#{name, jdbcType=VARCHAR},
+			age=#{age, jdbcType=NUMERIC},
+			salary=#{salary, jdbcType=NUMERIC}
+				where id=#{id, jdbcType=VARCHAR}
+	</update>
+	<insert id="insert" parameterType="com.aaron.graduationdesign.models.MyDemo">
+		insert into my_demo values
+		(
+			#{id, jdbcType=VARCHAR},
+			#{name, jdbcType=VARCHAR},
+			#{age, jdbcType=NUMERIC},
+			#{salary, jdbcType=NUMERIC}
+		)
+	</insert>
+	<delete id="del" parameterType="list">
+		delete from my_demo where    id in            
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+		#{id, jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+	
+	
+	<!--自定义sql从此处开始-->
+	
+	
+</mapper>

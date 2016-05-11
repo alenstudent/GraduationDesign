@@ -2,6 +2,8 @@ package com.aaron.framework.exception;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.aaron.framework.model.ReturnCodeEnum;
+
 /**
  * 基本异常类
  * @author aaron
@@ -9,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public abstract class BaseException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	protected String msg;
-	protected int code = 400;
+	protected int code = ReturnCodeEnum.NETWORK_ERROR.getCode();
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);

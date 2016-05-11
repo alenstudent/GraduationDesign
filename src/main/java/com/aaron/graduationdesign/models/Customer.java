@@ -10,7 +10,7 @@ import com.aaron.framework.model.BaseModel;
 /**
  * 对象功能:客户信息表 Model对象
  * 开发人员:aaron
- * 创建时间:2016-04-27 00:02:52
+ * 创建时间:2016-04-28 17:17:40
  */
 public class Customer extends BaseModel {
 	private static final long serialVersionUID = 1L;
@@ -50,6 +50,14 @@ public class Customer extends BaseModel {
 	 * 开户银行名称
 	 */
 	private String  cusBankName;
+	/**
+	 * 创建时间
+	 */
+	private Date createTime;
+	/**
+	 * 更新时间
+	 */
+	private Date updateTime;
 
 	/**
 	 * 设置 主键
@@ -176,6 +184,19 @@ public class Customer extends BaseModel {
 	 */
 	public String getCusBankName() {
 		return this.cusBankName;
+	}
+	
+	public Date getCreateTime() {
+		return createTime;
+	}
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 	/**
 	 * @see java.lang.Object#toString()

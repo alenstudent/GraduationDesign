@@ -196,7 +196,7 @@
 					<webDefaultXml>${basedir}/src/main/resources/webdefault.xml</webDefaultXml>
 					<connectors>
 						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
-							<port>80</port>
+							<port>8080</port>
 						</connector>
 					</connectors>
 					<scanIntervalSeconds>0</scanIntervalSeconds>

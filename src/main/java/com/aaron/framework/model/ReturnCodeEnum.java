@@ -7,7 +7,7 @@ package com.aaron.framework.model;
 * 类说明：TODO
 */
 public enum ReturnCodeEnum {
-	SUCCESS(200, "成功"), NETWORK_ERROR(500, "网络繁忙"), PARAM_ERROR(400, "参数异常");
+	SUCCESS(200, "成功"), NETWORK_ERROR(500, "网络繁忙"), PARAM_ERROR(400, "参数异常"), FORBIDDEN(403, "没有权限"), UNLOGIN(-1, "请先登录");
 	
 	private int code;
 	private String tips;

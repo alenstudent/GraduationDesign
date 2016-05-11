@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.aaron.graduationdesign.models.Customer">
+	<resultMap id="Customer" type="com.aaron.graduationdesign.models.Customer">
+		<id property="id" column="id" jdbcType="VARCHAR"/>
+		<result property="cusName" column="cus_name" jdbcType="VARCHAR"/>
+		<result property="cusAddress" column="cus_address" jdbcType="VARCHAR"/>
+		<result property="cusZipCode" column="cus_zip_code" jdbcType="VARCHAR"/>
+		<result property="cusPhone" column="cus_phone" jdbcType="VARCHAR"/>
+		<result property="cusBelongTo" column="cus_belong_to" jdbcType="VARCHAR"/>
+		<result property="cusTaxNum" column="cus_tax_num" jdbcType="VARCHAR"/>
+		<result property="cusBankAccount" column="cus_bank_account" jdbcType="VARCHAR"/>
+		<result property="cusBankName" column="cus_bank_name" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="columns">
+		id,cus_name,cus_address,cus_zip_code,cus_phone,cus_belong_to,cus_tax_num,cus_bank_account,cus_bank_name
+	</sql>
+	
+	<select id="list" resultMap="Customer">
+		select <include refid="columns" /> from customers
+	</select>
+	<update id="update" parameterType="com.aaron.graduationdesign.models.Customer">
+		update customers set 
+			cus_name = #{cusName, jdbcType=VARCHAR}, 
+			cus_address = #{cusAddress, jdbcType=VARCHAR}, 
+			cus_zip_code = #{cusZipCode, jdbcType=VARCHAR}, 
+			cus_phone = #{cusPhone, jdbcType=VARCHAR}, 
+			cus_belong_to = #{cusBelongTo, jdbcType=VARCHAR}, 
+			cus_tax_num = #{cusTaxNum, jdbcType=VARCHAR}, 
+			cus_bank_account = #{cusBankAccount, jdbcType=VARCHAR}, 
+			cus_bank_name = #{cusBankName, jdbcType=VARCHAR}
+			where id = #{id, jdbcType=VARCHAR}
+	</update>
+	<insert id="insert" parameterType="com.aaron.graduationdesign.models.Customer">
+		insert into customers values
+		(
+			#{id, jdbcType=VARCHAR},
+			#{cusName, jdbcType=VARCHAR},
+			#{cusAddress, jdbcType=VARCHAR},
+			#{cusZipCode, jdbcType=VARCHAR},
+			#{cusPhone, jdbcType=VARCHAR},
+			#{cusBelongTo, jdbcType=VARCHAR},
+			#{cusTaxNum, jdbcType=VARCHAR},
+			#{cusBankAccount, jdbcType=VARCHAR},
+			#{cusBankName, jdbcType=VARCHAR}
+		)
+	</insert>
+	<delete id="del" parameterType="list">
+		delete from customers where id in 
+		<foreach collection="list" item="id" open="(" close=")">
+			#{id, jdbcType=VARCHAR}
+		</foreach>
+	</delete>
+	
+	<select id="getAllCustomersBySalseId" resultMap="Customer">
+		select <include refid="columns" /> from customers where cus_belong_to = #{saleId}
+	</select>
+	<insert id="addCustomer" parameterType="com.aaron.graduationdesign.models.Customer">
+		insert into customers values(
+			#{id, jdbcType=VARCHAR},
+			#{cusName, jdbcType=VARCHAR},
+			#{cusAddress, jdbcType=VARCHAR},
+			#{cusZipCode, jdbcType=VARCHAR},
+			#{cusPhone, jdbcType=VARCHAR},
+			#{cusBelongTo, jdbcType=VARCHAR},
+			#{cusTaxNum, jdbcType=VARCHAR},
+			#{cusBankAccount, jdbcType=VARCHAR},
+			#{cusBankName, jdbcType=VARCHAR}
+		)
+	</insert>
+</mapper>

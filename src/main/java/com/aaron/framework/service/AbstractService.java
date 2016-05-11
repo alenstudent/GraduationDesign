@@ -101,14 +101,10 @@ public abstract class AbstractService implements BaseService {
 		return this.getDao().selectUniqueOneBySqlIdAndParam(sqlId, param);
 	}
 	
-	public <T> List<T> list(Page<T> page) {
-		return this.list(page, new Object());
+	public <T> List<T> list(Page<T> page, Class<? extends BaseModel> clazz) {
+		return this.list(page, new Object(), clazz);
 	}
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public <T> List<T> list(Page<T> page, Object param) {
-		Type genType = page.getClass().getGenericSuperclass();
-		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-		Class clazz = (Class) params[0];
+	public <T> List<T> list(Page<T> page, Object param, Class<? extends BaseModel> clazz) {
 		return this.getDao().selectListBySqlIdAndParamWithPage(NamespaceUtil.getNamespace(clazz, "list"), param, page);
 	}
 	public int delete(List<String> ids, Class<? extends BaseModel> clazz) {

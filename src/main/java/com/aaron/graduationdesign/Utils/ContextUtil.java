@@ -2,9 +2,11 @@ package com.aaron.graduationdesign.Utils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import com.aaron.framework.exception.UnLoginException;
 import com.aaron.framework.utils.EhCacheUtil;
@@ -28,7 +30,22 @@ public class ContextUtil {
 		}
 		throw new UnLoginException("用户未登录");
 	}
+	public static String getCurrentUserId() {
+		return getUserFromContext().getId();
+	}
 	public static HttpServletRequest getRequestFromContext() {
 		return ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
+	}
+	public static HttpServletResponse getResponse() {
+		return ((ServletWebRequest)RequestContextHolder.getRequestAttributes()).getResponse();
+	}
+	
+	public static boolean isAjaxRequest() {
+		HttpServletRequest request = getRequestFromContext();
+		if (null != request.getHeader("X-Requested-With") && "XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {				
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

@@ -19,13 +19,11 @@ function register() {
 	var userName = $("input[name='userName']").val();
 	var password = $("input[name=\"password\"").val();
 	var confirmPassword = $("input[name=\"confirmPassword\"").val();
-	var userType = $("select").val();
+	var userType = $("input:radio[name='userType']:checked").val();
 	if (password != confirmPassword || password == "") {
 		$("div.form-group:gt(0)").addClass("has-error");
 		return;
 	}
-	
-	
 	AjaxUtil.post("/user/register/" + userName + "/" + hex_md5(password) + "/" + userType, {}, function(data) {
 		debug(data);
 		if (data.returnModel.code == 200) {

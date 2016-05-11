@@ -7,8 +7,10 @@ AjaxUtil.get = function(url, param, success, error) {
 		data: param,
 		cache: false,
 		success: function(data) {
-			if (data.returnModel.code == 403) {
-				window.location.href=context;
+			debug(data);
+			if (data.returnModel.code == -1) {
+				alert("请先进行登录");
+				window.location.href=context + "/user/login/page";
 			} else if (data.returnModel.code != 200) {
 				alert(data.returnModel.msg);
 			} else {
@@ -22,7 +24,10 @@ AjaxUtil.get = function(url, param, success, error) {
         	}
         },
 		dataType: "json",
-		error: error
+		error: function() {
+			alert("网络繁忙，请稍候再试");
+			error();
+		}
 	});
 }
 
@@ -34,8 +39,9 @@ AjaxUtil.post = function(url, param, success, error) {
 		data: param,
 		cache: false,
 		success: function(data) {
-			if (data.returnModel.code == 403) {
-				window.location.href=context;
+			if (data.returnModel.code == -1) {
+				alert("请先进行登录");
+				window.location.href=context + "/user/login/page";
 			} else if (data.returnModel.code != 200) {
 				alert(data.returnModel.msg);
 			} else {
@@ -49,7 +55,10 @@ AjaxUtil.post = function(url, param, success, error) {
         	}
         },
 		dataType: "json",
-		error: error
+		error: function() {
+			alert("网络繁忙，请稍候再试");
+			error();
+		}
 	});
 }
 
@@ -70,6 +79,43 @@ window.alert = function(msg) {
 	});
 }
 
-function showTips(tips) {
-	BootstrapDialog.show({title: "提示", message: tips});
+function showTips(msg) {
+	BootstrapDialog.show({title: "提示", message: msg});
 }
+
+window.confirm = function(msg, okFunc) {
+	BootstrapDialog.show({
+		message: msg,
+		title: "提示",
+		buttons: [{
+			label: "确定",
+			action: function(dialog) {
+				okFunc();
+				dialog.close();
+			}
+		},
+		{
+			label: "取消",
+			action: function(dialog) {
+				dialog.close();
+			}
+		}]
+	});
+}
+
+
+window.open = function(url, param) {
+	var id = new Date().getTime();
+	var form = "<form target='_blank' action='" + context + "/" + url + "' id='" + id +"' method='POST' style='display: none;'>";
+	for (var field in param) {
+		form += "<input type='hidden' name='" + field + "' value='" + param[field] + "' />";
+	}
+//	<input type="text" name="id" value="1" />
+		form += "</form>";
+		$("body").append(form);
+		$("#" + id).submit();
+		$("#" + id).remove();
+}
+
+
+

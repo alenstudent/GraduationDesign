@@ -11,21 +11,38 @@
 		<result property="proCurrentStock" column="pro_current_stock" jdbcType="NUMERIC"/>
 		<result property="proAdviceSalePrice" column="pro_advice_sale_price" jdbcType="NUMERIC"/>
 		<result property="proManufacturer" column="pro_manufacturer" jdbcType="VARCHAR"/>
-		<result property="proCraeteTime" column="pro_craete_time" jdbcType="TIMESTAMP"/>
-		<result property="proUpdateTime" column="pro_update_time" jdbcType="TIMESTAMP"/>
+		<result property="craeteTime" column="craete_time" jdbcType="TIMESTAMP"/>
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
 		<result property="proUpdateUser" column="pro_update_user" jdbcType="VARCHAR"/>
 	</resultMap>
 
 	<sql id="columns">
-		id,pro_num,pro_name,pro_ggxh,pro_union,pro_total_sale_count,pro_current_stock,pro_advice_sale_price,pro_manufacturer,pro_craete_time,pro_update_time,pro_update_user
+		id,pro_num,pro_name,pro_ggxh,pro_union,pro_total_sale_count,pro_current_stock,pro_advice_sale_price,pro_manufacturer,craete_time,update_time,pro_update_user
 	</sql>
 	
-	
-	<select id="getAllProducts" resultMap="Product">
-		select <include refid="columns" /> from products
+	<select id="list" resultMap="Product">
+		select <include refid="columns" /> from products where pro_update_user = #{userId, jdbcType=VARCHAR}
 	</select>
-	<insert id="addProduct" parameterType="com.aaron.graduationdesign.models.Product">
-		insert into products values(
+	<select id="info" resultMap="Product">
+		select <include refid="columns" /> from products where id = #{id, jdbcType=VARCHAR}
+	</select>
+	<update id="update" parameterType="com.aaron.graduationdesign.models.Product">
+		update products set 
+			pro_num=#{proNum, jdbcType=VARCHAR},
+			pro_name=#{proName, jdbcType=VARCHAR},
+			pro_ggxh=#{proGgxh, jdbcType=VARCHAR},
+			pro_union=#{proUnion, jdbcType=VARCHAR},
+			pro_total_sale_count=#{proTotalSaleCount, jdbcType=NUMERIC},
+			pro_current_stock=#{proCurrentStock, jdbcType=NUMERIC},
+			pro_advice_sale_price=#{proAdviceSalePrice, jdbcType=NUMERIC},
+			pro_manufacturer=#{proManufacturer, jdbcType=VARCHAR},
+			update_time=#{updateTime, jdbcType=TIMESTAMP},
+			pro_update_user=#{proUpdateUser, jdbcType=VARCHAR}
+		where id=#{id, jdbcType=VARCHAR}
+	</update>
+	<insert id="insert" parameterType="com.aaron.graduationdesign.models.Product">
+		insert into products values
+		(
 			#{id, jdbcType=VARCHAR},
 			#{proNum, jdbcType=VARCHAR},
 			#{proName, jdbcType=VARCHAR},
@@ -35,14 +52,22 @@
 			#{proCurrentStock, jdbcType=NUMERIC},
 			#{proAdviceSalePrice, jdbcType=NUMERIC},
 			#{proManufacturer, jdbcType=VARCHAR},
-			#{proCraeteTime, jdbcType=TIMESTAMP},
-			#{proUpdateTime, jdbcType=TIMESTAMP},
+			#{craeteTime, jdbcType=TIMESTAMP},
+			#{updateTime, jdbcType=TIMESTAMP},
 			#{proUpdateUser, jdbcType=VARCHAR}
 		)
 	</insert>
+	<delete id="del" parameterType="list">
+		delete from products where    id in                                    
+		<foreach collection="list" item="id" open="(" close=")" separator=",">
+		#{id, jdbcType=VARCHAR}
+		</foreach>
+	</delete>
 	
-	<select id="getProductByProductId" resultMap="Product" parameterType="string">
-		select <include refid="columns" /> from products where id = #{id}
+	
+	<!--自定义sql从此处开始-->
+	<select id="listAllProduct" resultMap="Product">
+		select <include refid="columns" /> from products order by update_time desc
 	</select>
 	
 </mapper>

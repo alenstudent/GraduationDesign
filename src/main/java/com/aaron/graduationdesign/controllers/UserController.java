@@ -14,9 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.aaron.framework.controller.BaseController;
 import com.aaron.framework.dao.IDUtil;
+import com.aaron.framework.exception.ForbiddenException;
 import com.aaron.framework.model.ReturnCodeEnum;
 import com.aaron.framework.model.ReturnModel;
 import com.aaron.framework.utils.EhCacheUtil;
+import com.aaron.graduationdesign.Utils.ContextUtil;
 import com.aaron.graduationdesign.models.User;
 import com.aaron.graduationdesign.services.UserService;
 
@@ -105,7 +107,7 @@ public class UserController extends BaseController {
 	}
 	@RequestMapping("/logout")
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
-		ModelAndView mav = getJsonView();
+		ModelAndView mav = getJSPView("redirect:user/login/page");
 		ReturnModel rm = new ReturnModel(ReturnCodeEnum.SUCCESS.getCode(), ReturnCodeEnum.SUCCESS.getTips(), null);
 		mav.addObject(rm);
 		
@@ -115,6 +117,16 @@ public class UserController extends BaseController {
 				EhCacheUtil.getInstance().remove(EhCacheUtil.JSESSIONID_CACHE_NAME, cookie.getValue());
 				break;
 			}
+		}
+		return mav;
+	}
+	
+	@RequestMapping("/admin/home")
+	public ModelAndView toAdminHome() {
+		ModelAndView mav = getJSPView("admin/home");
+		User user = ContextUtil.getUserFromContext();
+		if (!user.getUserName().equals("admin")) {
+			throw new ForbiddenException();
 		}
 		return mav;
 	}

@@ -14,6 +14,7 @@ public class UnKnowException extends BaseException {
 	public UnKnowException(String msg) {
 		super();
 		this.msg = msg;
+		
 	}
 
 	public UnKnowException() {

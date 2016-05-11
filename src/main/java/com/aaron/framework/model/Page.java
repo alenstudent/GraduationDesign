@@ -35,7 +35,7 @@ public class Page<T> extends BaseModel {
 		this.currentPage = currentPage;
 		this.pageSize = pageSize;
 		this.startRow = currentPage > 0 ? (currentPage - 1) * pageSize : 0;
-		this.endRow = currentPage * pageSize;
+		this.endRow = pageSize;
 	}
 
 	public int getCurrentPage() {
